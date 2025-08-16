@@ -7,12 +7,14 @@ app.use(cors());
 app.use(express.json()); // form se aaya JSON data parse karega
 
 // ✅ MongoDB connect
-mongoose.connect("mongodb://127.0.0.1:27017/formDB", {
+require("dotenv").config();
+
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log(err));
+.then(() => console.log("✅ MongoDB connected"))
+.catch(err => console.log("❌ Error: ", err));
 
 // ✅ Schema banao
 const formSchema = new mongoose.Schema({
