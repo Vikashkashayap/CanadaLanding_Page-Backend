@@ -25,6 +25,9 @@ const formSchema = new mongoose.Schema({
 
 // ✅ Model
 const FormData = mongoose.model("FormData", formSchema);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 // ✅ POST API (form data save karne ke liye)
 app.post("/api/form", async (req, res) => {
