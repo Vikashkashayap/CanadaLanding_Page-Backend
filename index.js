@@ -1,28 +1,27 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
 
 // ✅ Middlewares
-app.use(cors()); // sab domains allowed
-app.use(express.json()); // JSON parse karega
+app.use(cors());
+app.use(express.json());
 
-// ✅ MongoDB connect
-
-mongoose.connect("mongodb+srv://vikashkashyap756:Welcome%401234@canada-form.ba6ezdb.mongodb.net/?retryWrites=true&w=majority&appName=canada-Form", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ MongoDB connected"))
-.catch(err => console.log("❌ MongoDB Error:", err));
+// ✅ MongoDB Connection (direct URI without .env)
+mongoose
+  .connect("mongodb+srv://vikashkashyap756:Welcome%401234@canada-form.ba6ezdb.mongodb.net/canadaForm?retryWrites=true&w=majority&appName=canada-Form", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB Error:", err));
 
 // ✅ Schema
 const formSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  phone: String,
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  phone: { type: String, required: true },
 });
 
 // ✅ Model
@@ -33,7 +32,7 @@ app.get("/", (req, res) => {
   res.send("🚀 API is running...");
 });
 
-// ✅ POST API (form data save karne ke liye)
+// ✅ POST API (save form data)
 app.post("/api/form", async (req, res) => {
   try {
     const { name, email, phone } = req.body;
@@ -55,7 +54,7 @@ app.post("/api/form", async (req, res) => {
   }
 });
 
-// ✅ GET API (saare form data fetch karne ke liye)
+// ✅ GET API (fetch all form data)
 app.get("/api/form", async (req, res) => {
   try {
     const data = await FormData.find();
@@ -66,8 +65,8 @@ app.get("/api/form", async (req, res) => {
   }
 });
 
-// ✅ Server listen (deployment friendly)
-const PORT = process.env.PORT || 5000;
+// ✅ Server listen
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
